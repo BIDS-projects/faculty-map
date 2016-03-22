@@ -1,0 +1,619 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from datascience import *"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "    <thead>\n",
+       "        <tr>\n",
+       "            <th>Name</th> <th>Interests</th> <th>Department</th>\n",
+       "        </tr>\n",
+       "    </thead>\n",
+       "    <tbody>\n",
+       "        <tr>\n",
+       "            <td>Sangwei Lu       </td> <td>pathogenesis~Salmonella~foodborne diseases                  </td> <td>School of Public Health                          </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>David A. Aaker   </td> <td>business~marketing~branding                                 </td> <td>Haas School of Business                          </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Pieter Abbeel    </td> <td>robotics~machine learning                                   </td> <td>Division of Computer Science/EECS                </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Elizabeth Abel   </td> <td>feminist theory~psychoanalysis~Virginia Woolf~race and g ...</td> <td>Department of English                            </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Norman Abrahamson</td> <td>civil and environmental engineering~earthquake ground mo ...</td> <td>Department of Civil and Environmental Engineering</td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Dor Abrahamson   </td> <td>mathematical cognition~design-based research~mixed-media ...</td> <td>Graduate School of Education                     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Barbara Abrams   </td> <td>obesity~maternal and child health~epidemiology~nutrition ...</td> <td>School of Public Health                          </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Kathryn Abrams   </td> <td>law~feminist jurisprudence~voting rights~constitutional law </td> <td>Boalt Hall School of Law                         </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Richard Abrams   </td> <td>politics~recent U.S. history: business foreign relations ...</td> <td>Department of History                            </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Charisma Acey    </td> <td>water~sanitation~basic services delivery~poverty allevia ...</td> <td>Department of City &amp; Regional Planning       </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "</table>\n",
+       "<p>... (18654 rows omitted)</p"
+      ],
+      "text/plain": [
+       "Name              | Interests                                                    | Department\n",
+       "Sangwei Lu        | pathogenesis~Salmonella~foodborne diseases                   | School of Public Health\n",
+       "David A. Aaker    | business~marketing~branding                                  | Haas School of Business\n",
+       "Pieter Abbeel     | robotics~machine learning                                    | Division of Computer Science/EECS\n",
+       "Elizabeth Abel    | feminist theory~psychoanalysis~Virginia Woolf~race and g ... | Department of English\n",
+       "Norman Abrahamson | civil and environmental engineering~earthquake ground mo ... | Department of Civil and Environmental Engineering\n",
+       "Dor Abrahamson    | mathematical cognition~design-based research~mixed-media ... | Graduate School of Education\n",
+       "Barbara Abrams    | obesity~maternal and child health~epidemiology~nutrition ... | School of Public Health\n",
+       "Kathryn Abrams    | law~feminist jurisprudence~voting rights~constitutional law  | Boalt Hall School of Law\n",
+       "Richard Abrams    | politics~recent U.S. history: business foreign relations ... | Department of History\n",
+       "Charisma Acey     | water~sanitation~basic services delivery~poverty allevia ... | Department of City &amp; Regional Planning\n",
+       "... (18654 rows omitted)"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Loads the csv data file for further data cleaning\n",
+    "file_name = \"research_data.csv\"\n",
+    "researchers = Table.read_table(file_name)\n",
+    "researchers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "    <thead>\n",
+       "        <tr>\n",
+       "            <th>Name</th> <th>count</th>\n",
+       "        </tr>\n",
+       "    </thead>\n",
+       "    <tbody>\n",
+       "        <tr>\n",
+       "            <td>A. James Gregor   </td> <td>8    </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>A. Paul Alivisatos</td> <td>9    </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>AMANDA TYLER      </td> <td>9    </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Aaron Fisher      </td> <td>9    </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Aaron S. Edlin    </td> <td>9    </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abby Dernburg     </td> <td>9    </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abdul JanMohamed  </td> <td>11   </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abena Osseo-Asare </td> <td>7    </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abhishek Kaicker  </td> <td>9    </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abigail De Kosnik </td> <td>11   </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "</table>\n",
+       "<p>... (2020 rows omitted)</p"
+      ],
+      "text/plain": [
+       "Name               | count\n",
+       "A. James Gregor    | 8\n",
+       "A. Paul Alivisatos | 9\n",
+       "AMANDA TYLER       | 9\n",
+       "Aaron Fisher       | 9\n",
+       "Aaron S. Edlin     | 9\n",
+       "Abby Dernburg      | 9\n",
+       "Abdul JanMohamed   | 11\n",
+       "Abena Osseo-Asare  | 7\n",
+       "Abhishek Kaicker   | 9\n",
+       "Abigail De Kosnik  | 11\n",
+       "... (2020 rows omitted)"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Shows a table with the names of researchers and the number of times their\n",
+    "# name appears in this data set\n",
+    "grouped_researchers = researchers.group(\"Name\").sort(\"Name\", descending=False)\n",
+    "grouped_researchers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "    <thead>\n",
+       "        <tr>\n",
+       "            <th>Name</th> <th>Interests</th> <th>Department</th>\n",
+       "        </tr>\n",
+       "    </thead>\n",
+       "    <tbody>\n",
+       "        <tr>\n",
+       "            <td>A. James Gregor   </td> <td>political science~methodology~political theory~comparati ...</td> <td>Department of Political Science           </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>A. Paul Alivisatos</td> <td>physical chemistry~semiconductor nanocrystals~nanoscienc ...</td> <td>Department of Chemistry                   </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>AMANDA TYLER      </td> <td>federal courts~separation of powers~habeas corpus~statut ...</td> <td>Boalt Hall School of Law                  </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Aaron Fisher      </td> <td>Anxiety~depression~personalized medicine~psychotherapy~p ...</td> <td>Department of Psychology                  </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Aaron S. Edlin    </td> <td>economics~industrial organization~regulation~antitrust      </td> <td>Department of Economics                   </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abby Dernburg     </td> <td>genomics~chromosome remodeling and reorganization during ...</td> <td>Department of Molecular &amp; Cell Biology</td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abdul JanMohamed  </td> <td>Critical theory; theory of subjection; postcolonial lite ...</td> <td>Department of English                     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abena Osseo-Asare </td> <td>African history~legal history~medical history~science hi ...</td> <td>Department of History                     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abhishek Kaicker  </td> <td>South Asia~Mughal~early modern~cities~history~Persian       </td> <td>Department of History                     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abigail De Kosnik </td> <td>new media~performance studies~performance theory~perform ...</td> <td>Theatre, Dance, and Performance Studies   </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "</table>\n",
+       "<p>... (2020 rows omitted)</p"
+      ],
+      "text/plain": [
+       "Name               | Interests                                                    | Department\n",
+       "A. James Gregor    | political science~methodology~political theory~comparati ... | Department of Political Science\n",
+       "A. Paul Alivisatos | physical chemistry~semiconductor nanocrystals~nanoscienc ... | Department of Chemistry\n",
+       "AMANDA TYLER       | federal courts~separation of powers~habeas corpus~statut ... | Boalt Hall School of Law\n",
+       "Aaron Fisher       | Anxiety~depression~personalized medicine~psychotherapy~p ... | Department of Psychology\n",
+       "Aaron S. Edlin     | economics~industrial organization~regulation~antitrust       | Department of Economics\n",
+       "Abby Dernburg      | genomics~chromosome remodeling and reorganization during ... | Department of Molecular &amp; Cell Biology\n",
+       "Abdul JanMohamed   | Critical theory; theory of subjection; postcolonial lite ... | Department of English\n",
+       "Abena Osseo-Asare  | African history~legal history~medical history~science hi ... | Department of History\n",
+       "Abhishek Kaicker   | South Asia~Mughal~early modern~cities~history~Persian        | Department of History\n",
+       "Abigail De Kosnik  | new media~performance studies~performance theory~perform ... | Theatre, Dance, and Performance Studies\n",
+       "... (2020 rows omitted)"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# This is the cleaned data that is void of duplicate researchers, \n",
+    "# and the data is alphabetized based on the researcher's name. \n",
+    "cleaned_researchers = researchers.sort(\"Name\", descending=False).group(\n",
+    "               \"Name\", min).relabeled(\"Interests min\", \"Interests\").relabeled(\n",
+    "                \"Department min\", \"Department\")\n",
+    "cleaned_researchers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# From the grouped_researchers table we initially created to better understand \n",
+    "# the problem, we can verify if are cleaned_researchers table has the same\n",
+    "# number of researchers as expected after removing duplicates.\n",
+    "grouped_researchers.num_rows == cleaned_researchers.num_rows"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Converts the cleaned database as a csv file.\n",
+    "cleaned_researchers.to_df().to_csv('cleaned_researchers.csv', index = False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "    <thead>\n",
+       "        <tr>\n",
+       "            <th>Name</th> <th>Interests</th> <th>Department</th> <th>Duplicate?</th>\n",
+       "        </tr>\n",
+       "    </thead>\n",
+       "    <tbody>\n",
+       "        <tr>\n",
+       "            <td>A. James Gregor   </td> <td>political science~methodology~political theory~comparati ...</td> <td>Department of Political Science           </td> <td>False     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>A. Paul Alivisatos</td> <td>physical chemistry~semiconductor nanocrystals~nanoscienc ...</td> <td>Department of Chemistry                   </td> <td>False     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>AMANDA TYLER      </td> <td>federal courts~separation of powers~habeas corpus~statut ...</td> <td>Boalt Hall School of Law                  </td> <td>False     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Aaron Fisher      </td> <td>Anxiety~depression~personalized medicine~psychotherapy~p ...</td> <td>Department of Psychology                  </td> <td>False     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Aaron S. Edlin    </td> <td>economics~industrial organization~regulation~antitrust      </td> <td>Department of Economics                   </td> <td>False     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abby Dernburg     </td> <td>genomics~chromosome remodeling and reorganization during ...</td> <td>Department of Molecular &amp; Cell Biology</td> <td>False     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abdul JanMohamed  </td> <td>Critical theory; theory of subjection; postcolonial lite ...</td> <td>Department of English                     </td> <td>False     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abena Osseo-Asare </td> <td>African history~legal history~medical history~science hi ...</td> <td>Department of History                     </td> <td>False     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abhishek Kaicker  </td> <td>South Asia~Mughal~early modern~cities~history~Persian       </td> <td>Department of History                     </td> <td>False     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abigail De Kosnik </td> <td>new media~performance studies~performance theory~perform ...</td> <td>Theatre, Dance, and Performance Studies   </td> <td>False     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "</table>\n",
+       "<p>... (2020 rows omitted)</p"
+      ],
+      "text/plain": [
+       "Name               | Interests                                                    | Department                                 | Duplicate?\n",
+       "A. James Gregor    | political science~methodology~political theory~comparati ... | Department of Political Science            | False\n",
+       "A. Paul Alivisatos | physical chemistry~semiconductor nanocrystals~nanoscienc ... | Department of Chemistry                    | False\n",
+       "AMANDA TYLER       | federal courts~separation of powers~habeas corpus~statut ... | Boalt Hall School of Law                   | False\n",
+       "Aaron Fisher       | Anxiety~depression~personalized medicine~psychotherapy~p ... | Department of Psychology                   | False\n",
+       "Aaron S. Edlin     | economics~industrial organization~regulation~antitrust       | Department of Economics                    | False\n",
+       "Abby Dernburg      | genomics~chromosome remodeling and reorganization during ... | Department of Molecular &amp; Cell Biology | False\n",
+       "Abdul JanMohamed   | Critical theory; theory of subjection; postcolonial lite ... | Department of English                      | False\n",
+       "Abena Osseo-Asare  | African history~legal history~medical history~science hi ... | Department of History                      | False\n",
+       "Abhishek Kaicker   | South Asia~Mughal~early modern~cities~history~Persian        | Department of History                      | False\n",
+       "Abigail De Kosnik  | new media~performance studies~performance theory~perform ... | Theatre, Dance, and Performance Studies    | False\n",
+       "... (2020 rows omitted)"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# A function that reveals whether a faculty member is associated with different\n",
+    "# departments. \n",
+    "def tilde_finder(table, column_name): \n",
+    "    duplicate = []\n",
+    "    for entry in table.column(column_name): \n",
+    "        if \"~\" in str(entry): \n",
+    "            duplicate.append(True)\n",
+    "        else: \n",
+    "            duplicate.append(False)\n",
+    "    return table.with_column(\"Duplicate?\", duplicate)\n",
+    "if_dupe_table = tilde_finder(cleaned_researchers, \"Department\")\n",
+    "if_dupe_table"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "    <thead>\n",
+       "        <tr>\n",
+       "            <th>Name</th> <th>Interests</th> <th>Department</th> <th>Duplicate?</th>\n",
+       "        </tr>\n",
+       "    </thead>\n",
+       "    <tbody>\n",
+       "        <tr>\n",
+       "            <td>Alice M. Agogino   </td> <td>New product development~computer-aided design &amp; data ...</td> <td>Department of Mechanical Engineering~Haas School of Business</td> <td>True      </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Alistair Sinclair  </td> <td>algorithms~applied probability~statistics~random walks~M ...</td> <td>Department of Statistics~Division of Electrical Engineer ...</td> <td>True      </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Andrew F. Stewart  </td> <td>archaeology~classics~Greek sculpture~ancient art and arc ...</td> <td>Department of Classics~Department of History of Art         </td> <td>True      </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Anne Nesbet        </td> <td>culture~film studies~Slavic languages~early Soviet cultu ...</td> <td>Department of Film and Media~Department of Italian Studies  </td> <td>True      </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Anne-lise Francois </td> <td>popular culture~English~comparative literature~the moder ...</td> <td>Department of English~Department of French                  </td> <td>True      </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Anthony J. Cascardi</td> <td>English~comparative literature~literature~Spanish~Portug ...</td> <td>Department of Comparative Literature~Department of Spani ...</td> <td>True      </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Anton Kaes         </td> <td>film studies~modern literature~literary and cultural the ...</td> <td>Department of Film and Media~Department of German           </td> <td>True      </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Aram Thomasian     </td> <td>statistics~electrical engineering~computer science rando ...</td> <td>Department of Statistics~Division of Electrical Engineer ...</td> <td>True      </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Barbara Spackman   </td> <td>feminist theory~psychoanalysis~culture~fascism~gender st ...</td> <td>Department of Comparative Literature~Department of Itali ...</td> <td>True      </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Barrie Thorne      </td> <td>feminist theory~gender theory~ethnography~qualitative me ...</td> <td>Department of Gender and Women&#039;s Studies~Department ...</td> <td>True      </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "</table>\n",
+       "<p>... (177 rows omitted)</p"
+      ],
+      "text/plain": [
+       "Name                | Interests                                                    | Department                                                   | Duplicate?\n",
+       "Alice M. Agogino    | New product development~computer-aided design &amp; data ... | Department of Mechanical Engineering~Haas School of Business | True\n",
+       "Alistair Sinclair   | algorithms~applied probability~statistics~random walks~M ... | Department of Statistics~Division of Electrical Engineer ... | True\n",
+       "Andrew F. Stewart   | archaeology~classics~Greek sculpture~ancient art and arc ... | Department of Classics~Department of History of Art          | True\n",
+       "Anne Nesbet         | culture~film studies~Slavic languages~early Soviet cultu ... | Department of Film and Media~Department of Italian Studies   | True\n",
+       "Anne-lise Francois  | popular culture~English~comparative literature~the moder ... | Department of English~Department of French                   | True\n",
+       "Anthony J. Cascardi | English~comparative literature~literature~Spanish~Portug ... | Department of Comparative Literature~Department of Spani ... | True\n",
+       "Anton Kaes          | film studies~modern literature~literary and cultural the ... | Department of Film and Media~Department of German            | True\n",
+       "Aram Thomasian      | statistics~electrical engineering~computer science rando ... | Department of Statistics~Division of Electrical Engineer ... | True\n",
+       "Barbara Spackman    | feminist theory~psychoanalysis~culture~fascism~gender st ... | Department of Comparative Literature~Department of Itali ... | True\n",
+       "Barrie Thorne       | feminist theory~gender theory~ethnography~qualitative me ... | Department of Gender and Women&#039;s Studies~Department ... | True\n",
+       "... (177 rows omitted)"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Narrows the table to include only faculty members that are duplicated. \n",
+    "multiple_dept_faculty = if_dupe_table.where(\"Duplicate?\", True)\n",
+    "multiple_dept_faculty"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "    <thead>\n",
+       "        <tr>\n",
+       "            <th>Name</th> <th>Interests</th> <th>Department</th>\n",
+       "        </tr>\n",
+       "    </thead>\n",
+       "    <tbody>\n",
+       "        <tr>\n",
+       "            <td>Alice M. Agogino   </td> <td>New product development~computer-aided design &amp; data ...</td> <td>Department of Mechanical Engineering~Haas School of Business</td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Alistair Sinclair  </td> <td>algorithms~applied probability~statistics~random walks~M ...</td> <td>Department of Statistics~Division of Electrical Engineer ...</td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Andrew F. Stewart  </td> <td>archaeology~classics~Greek sculpture~ancient art and arc ...</td> <td>Department of Classics~Department of History of Art         </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Anne Nesbet        </td> <td>culture~film studies~Slavic languages~early Soviet cultu ...</td> <td>Department of Film and Media~Department of Italian Studies  </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Anne-lise Francois </td> <td>popular culture~English~comparative literature~the moder ...</td> <td>Department of English~Department of French                  </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Anthony J. Cascardi</td> <td>English~comparative literature~literature~Spanish~Portug ...</td> <td>Department of Comparative Literature~Department of Spani ...</td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Anton Kaes         </td> <td>film studies~modern literature~literary and cultural the ...</td> <td>Department of Film and Media~Department of German           </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Aram Thomasian     </td> <td>statistics~electrical engineering~computer science rando ...</td> <td>Department of Statistics~Division of Electrical Engineer ...</td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Barbara Spackman   </td> <td>feminist theory~psychoanalysis~culture~fascism~gender st ...</td> <td>Department of Comparative Literature~Department of Itali ...</td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Barrie Thorne      </td> <td>feminist theory~gender theory~ethnography~qualitative me ...</td> <td>Department of Gender and Women&#039;s Studies~Department ...</td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "</table>\n",
+       "<p>... (177 rows omitted)</p"
+      ],
+      "text/plain": [
+       "Name                | Interests                                                    | Department\n",
+       "Alice M. Agogino    | New product development~computer-aided design &amp; data ... | Department of Mechanical Engineering~Haas School of Business\n",
+       "Alistair Sinclair   | algorithms~applied probability~statistics~random walks~M ... | Department of Statistics~Division of Electrical Engineer ...\n",
+       "Andrew F. Stewart   | archaeology~classics~Greek sculpture~ancient art and arc ... | Department of Classics~Department of History of Art\n",
+       "Anne Nesbet         | culture~film studies~Slavic languages~early Soviet cultu ... | Department of Film and Media~Department of Italian Studies\n",
+       "Anne-lise Francois  | popular culture~English~comparative literature~the moder ... | Department of English~Department of French\n",
+       "Anthony J. Cascardi | English~comparative literature~literature~Spanish~Portug ... | Department of Comparative Literature~Department of Spani ...\n",
+       "Anton Kaes          | film studies~modern literature~literary and cultural the ... | Department of Film and Media~Department of German\n",
+       "Aram Thomasian      | statistics~electrical engineering~computer science rando ... | Department of Statistics~Division of Electrical Engineer ...\n",
+       "Barbara Spackman    | feminist theory~psychoanalysis~culture~fascism~gender st ... | Department of Comparative Literature~Department of Itali ...\n",
+       "Barrie Thorne       | feminist theory~gender theory~ethnography~qualitative me ... | Department of Gender and Women&#039;s Studies~Department ...\n",
+       "... (177 rows omitted)"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Returns a cleaned data set as it was originally presented, without the \n",
+    "# addtional \"Duplicate?\" column. Now this database contains faculty members \n",
+    "# that are involved in multiple departments.\n",
+    "cleaned_multiple_dept_faculty = multiple_dept_faculty.drop(\"Duplicate?\")\n",
+    "cleaned_multiple_dept_faculty"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Converts the database that contains faculty involved in multiple departments \n",
+    "# as a csv file.\n",
+    "cleaned_multiple_dept_faculty.to_df().to_csv('cleaned_multiple_dept_faculty.csv', index = False)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.4.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 0
+}
