@@ -1,0 +1,240 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from datascience import *"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "    <thead>\n",
+       "        <tr>\n",
+       "            <th>Name</th> <th>Interests</th> <th>Department</th>\n",
+       "        </tr>\n",
+       "    </thead>\n",
+       "    <tbody>\n",
+       "        <tr>\n",
+       "            <td>A. James Gregor   </td> <td>political science~methodology~political theory~comparati ...</td> <td>Department of Political Science           </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>A. Paul Alivisatos</td> <td>physical chemistry~semiconductor nanocrystals~nanoscienc ...</td> <td>Department of Chemistry                   </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>AMANDA TYLER      </td> <td>federal courts~separation of powers~habeas corpus~statut ...</td> <td>Boalt Hall School of Law                  </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Aaron Fisher      </td> <td>Anxiety~depression~personalized medicine~psychotherapy~p ...</td> <td>Department of Psychology                  </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Aaron S. Edlin    </td> <td>economics~industrial organization~regulation~antitrust      </td> <td>Department of Economics                   </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abby Dernburg     </td> <td>genomics~chromosome remodeling and reorganization during ...</td> <td>Department of Molecular &amp; Cell Biology</td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abdul JanMohamed  </td> <td>Critical theory; theory of subjection; postcolonial lite ...</td> <td>Department of English                     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abena Osseo-Asare </td> <td>African history~legal history~medical history~science hi ...</td> <td>Department of History                     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abhishek Kaicker  </td> <td>South Asia~Mughal~early modern~cities~history~Persian       </td> <td>Department of History                     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Abigail De Kosnik </td> <td>new media~performance studies~performance theory~perform ...</td> <td>Theatre, Dance, and Performance Studies   </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "</table>\n",
+       "<p>... (2020 rows omitted)</p"
+      ],
+      "text/plain": [
+       "Name               | Interests                                                    | Department\n",
+       "A. James Gregor    | political science~methodology~political theory~comparati ... | Department of Political Science\n",
+       "A. Paul Alivisatos | physical chemistry~semiconductor nanocrystals~nanoscienc ... | Department of Chemistry\n",
+       "AMANDA TYLER       | federal courts~separation of powers~habeas corpus~statut ... | Boalt Hall School of Law\n",
+       "Aaron Fisher       | Anxiety~depression~personalized medicine~psychotherapy~p ... | Department of Psychology\n",
+       "Aaron S. Edlin     | economics~industrial organization~regulation~antitrust       | Department of Economics\n",
+       "Abby Dernburg      | genomics~chromosome remodeling and reorganization during ... | Department of Molecular &amp; Cell Biology\n",
+       "Abdul JanMohamed   | Critical theory; theory of subjection; postcolonial lite ... | Department of English\n",
+       "Abena Osseo-Asare  | African history~legal history~medical history~science hi ... | Department of History\n",
+       "Abhishek Kaicker   | South Asia~Mughal~early modern~cities~history~Persian        | Department of History\n",
+       "Abigail De Kosnik  | new media~performance studies~performance theory~perform ... | Theatre, Dance, and Performance Studies\n",
+       "... (2020 rows omitted)"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Loads the csv data file for further data cleaning\n",
+    "file_name = \"cleaned_researchers.csv\"\n",
+    "researchers = Table.read_table(file_name)\n",
+    "researchers.sort(\"Name\", descending=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "    <thead>\n",
+       "        <tr>\n",
+       "            <th>Name</th> <th>Interests</th> <th>Department</th>\n",
+       "        </tr>\n",
+       "    </thead>\n",
+       "    <tbody>\n",
+       "        <tr>\n",
+       "            <td>Abby Dernburg     </td> <td>genomics~chromosome remodeling and reorganization during ...</td> <td>Department of Molecular &amp; Cell Biology                  </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Adolf D. May      </td> <td>operations~control systems~simulation modeling~detector  ...</td> <td>Department of Civil and Environmental Engineering           </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Ahmad Bahai       </td> <td>wireless sensor networks~statistical signal processing i ...</td> <td>Division of Electrical Engineering/EECS                     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Alan H. Schoenfeld</td> <td>thinking~teaching~learning~productive learning environme ...</td> <td>Graduate School of Education                                </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Alan Jay Smith    </td> <td>computer architecture &amp; engineering~operating system ...</td> <td>Division of Computer Science/EECS                           </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Alexei Efros      </td> <td>computer vision~computer graphics~computational photography </td> <td>Division of Computer Science/EECS                           </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Alexey Pozdnukhov </td> <td>machine learning~spatial data mining~smart cities           </td> <td>College of Engineering                                      </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Ali M. Niknejad   </td> <td>analog integrated circuits~RF microwave circuits~device  ...</td> <td>Division of Electrical Engineering/EECS                     </td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Alice M. Agogino  </td> <td>New product development~computer-aided design &amp; data ...</td> <td>Department of Mechanical Engineering~Haas School of Business</td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "        <tr>\n",
+       "            <td>Alistair Sinclair </td> <td>algorithms~applied probability~statistics~random walks~M ...</td> <td>Department of Statistics~Division of Electrical Engineer ...</td>\n",
+       "        </tr>\n",
+       "    </tbody>\n",
+       "</table>\n",
+       "<p>... (261 rows omitted)</p"
+      ],
+      "text/plain": [
+       "Name               | Interests                                                    | Department\n",
+       "Abby Dernburg      | genomics~chromosome remodeling and reorganization during ... | Department of Molecular &amp; Cell Biology\n",
+       "Adolf D. May       | operations~control systems~simulation modeling~detector  ... | Department of Civil and Environmental Engineering\n",
+       "Ahmad Bahai        | wireless sensor networks~statistical signal processing i ... | Division of Electrical Engineering/EECS\n",
+       "Alan H. Schoenfeld | thinking~teaching~learning~productive learning environme ... | Graduate School of Education\n",
+       "Alan Jay Smith     | computer architecture &amp; engineering~operating system ... | Division of Computer Science/EECS\n",
+       "Alexei Efros       | computer vision~computer graphics~computational photography  | Division of Computer Science/EECS\n",
+       "Alexey Pozdnukhov  | machine learning~spatial data mining~smart cities            | College of Engineering\n",
+       "Ali M. Niknejad    | analog integrated circuits~RF microwave circuits~device  ... | Division of Electrical Engineering/EECS\n",
+       "Alice M. Agogino   | New product development~computer-aided design &amp; data ... | Department of Mechanical Engineering~Haas School of Business\n",
+       "Alistair Sinclair  | algorithms~applied probability~statistics~random walks~M ... | Department of Statistics~Division of Electrical Engineer ...\n",
+       "... (261 rows omitted)"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "def interest_finder(t, column_name):\n",
+    "    data_related = []\n",
+    "    for interest in t.column(column_name): \n",
+    "        interest = str(interest)\n",
+    "        if \"data\" in interest or \"comput\" in interest or \"machine learning\" in interest or \"visualization\" in interest or \"statistic\" in interest or \"analytic\" in interest or \"modeling\" in interest:\n",
+    "            data_related.append(True)\n",
+    "        else: \n",
+    "            data_related.append(False)\n",
+    "    return t.with_column(\"Data Related?\", data_related)\n",
+    "data_related_faculty = interest_finder(researchers, \"Interests\").where(\"Data Related?\", True).drop(\"Data Related?\")\n",
+    "data_faculty = data_faculty.where(data_faculty.column(\"Name\") != \"testFname testLname\")\n",
+    "cleaned_data_faculty = data_faculty.where(data_faculty.column(\"Name\") != \"neuronal circuits\")\n",
+    "cleaned_data_faculty"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "cleaned_data_faculty.to_df().to_csv('Data Related Faculty.csv', index = False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.4.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 0
+}
