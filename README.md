@@ -4,4 +4,4 @@ Using dataset of UC Berkeley Researchers and their research interests/department
 
 Parsing, cleaning, and classifying using iPython Notebooks from JupyterHub.
 
-Vinitra Swamy, Subiksha Mani
+Vinitra Swamy, Subhiksha Mani
